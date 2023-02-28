@@ -16,7 +16,6 @@ def get_cijfers(un,pw,academiejaar):
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
     delay = 5 # time before it stops waiting to load, may need to increase with slow internet
     driver = webdriver.Chrome(options=options)
-    #driver = webdriver.Chrome()    non-headless alternative, opens chrome on foreground instead of background
 
     url = "https://ssologin.uantwerpen.be/"
     driver.get(url)
