@@ -12,8 +12,8 @@ from tabulate import tabulate
 
 def get_cijfers(un,pw,academiejaar):
     options = Options()
-    options.add_argument("--headless")
-    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    options.add_argument("--headless") # Use browser in headless state
+    options.add_experimental_option('excludeSwitches', ['enable-logging']) # Surpress log statements being printed
     delay = 5 # time before it stops waiting to load, may need to increase with slow internet
     driver = webdriver.Chrome(options=options)
 
@@ -55,30 +55,35 @@ def get_cijfers(un,pw,academiejaar):
     html = driver.page_source
     driver.quit()
 
-    '''text_file = open("soup.txt", "w")
+    text_file = open("soup.txt", "w")    # Save html as soup
     n = text_file.write(str(html))
-    text_file.close()'''
+    text_file.close()
 
     posities_vakken = [i for i in range(len(html)) if html.startswith('id="CLASS_TBL_VW_DESCR', i)]
     vakken=[]
-    for i in range(len(posities_vakken)):
+    for pos in posities_vakken:
+        if html[pos+24] != '"':
+            pos += 1
         vak=""
-        j=1
-        while html[posities_vakken[i]+25+j] != "<":
-            vak+=html[posities_vakken[i]+25+j]
+        j = 1
+        while html[pos+25+j] != "<":
+            vak += html[pos+25+j]
             j+=1
         vakken.append(vak)
 
     posities_scores = [i for i in range(len(html)) if html.startswith('id="STDNT_ENRL_SSV1_CRSE_GRADE_OFF', i)]
     scores=[]
     aantal_scores=0
-    for i in range(len(posities_scores)):
+    for pos in posities_scores:
         score=""
-        if html[posities_scores[i]+38] != "&":
-            score+=html[posities_scores[i]+38]
+        if html[pos+36] != '"':
+            pos += 1
+
+        if html[pos+38] != "&":
+            score+=html[pos+38]
             aantal_scores+=1
-            if html[posities_scores[i]+39] != "&":
-                score+=html[posities_scores[i]+39]
+            if html[pos+39] != "&":
+                score+=html[pos+39]
             scores.append(score)
         else:
             scores.append("/")
