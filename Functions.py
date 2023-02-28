@@ -55,9 +55,9 @@ def get_cijfers(un,pw,academiejaar):
     html = driver.page_source
     driver.quit()
 
-    text_file = open("soup.txt", "w")    # Save html as soup
+    '''text_file = open("soup.txt", "w")    # Save html as soup
     n = text_file.write(str(html))
-    text_file.close()
+    text_file.close()'''
 
     posities_vakken = [i for i in range(len(html)) if html.startswith('id="CLASS_TBL_VW_DESCR', i)]
     vakken=[]
